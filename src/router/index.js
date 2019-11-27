@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Loans from '../views/Loans.vue'
+import Customers from '../views/Customers.vue'
+import Customer from '../views/Customer.vue'
+import Plans from '../views/Plans.vue'
+import Rates from '../views/Rates.vue'
+import LoanCalculator from '../views/LoanCalculator.vue'
 
 Vue.use(VueRouter)
 
@@ -9,6 +15,36 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/loans',
+    name: 'loans',
+    component: Loans
+  },
+  {
+    path: '/customers',
+    name: 'customers',
+    component: Customers
+  },
+  {
+    path: '/customers/:id',
+    name: 'customer',
+    component: Customer
+  },
+  {
+    path: '/plans',
+    name: 'plans',
+    component: Plans
+  },
+  {
+    path: '/rates',
+    name: 'rates',
+    component: Rates
+  },
+  {
+    path: '/calculate',
+    name: 'calculate',
+    component: LoanCalculator
   },
   {
     path: '/about',
