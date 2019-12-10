@@ -1,20 +1,18 @@
 <template>
-  <div class="font-sans">
-
+  <div class="mt-8">
     <!-- page title -->
-    <div class="mb-3">
-      <h1 class="text-left font-sans font-medium">{{ pageTitle }}</h1>
-    </div>
+    <h3 class="text-xl font-light tracking-wide">
+      Loan Projection
+    </h3>
+
+    <hr class="mb-5" />
 
     <!-- repayment schedule -->
     <div class="w-full md:flex -mx-2">
-
       <!-- loan form -->
       <div class="md:w-1/3 bg-white rounded shadow px-2 py-5 mr-5">
         <form class="w-full px-5">
-
           <div class="mb-5">
-
             <div class="md:flex -mx-2 mb-3">
               <div class="md:w-1/2 px-2">
                 <label
@@ -126,7 +124,6 @@
                 />
               </div>
             </div>
-
           </div>
 
           <div class="w-full md:w-1">
@@ -137,19 +134,18 @@
               Submit
             </button>
           </div>
-
         </form>
       </div>
 
       <!-- schedules projection -->
       <div class="md:flex-1 bg-white rounded shadow px-2 py-5 h-auto">
         <div class="px-3">
-          <h4 class="text-gray-700 text-left">Projected Repayment Schedule</h4>
+          <h4 class="text-gray-700 tracking-wide text-left">Projected Repayment Schedule</h4>
 
           <hr />
 
-          <table v-if="installments.length > 0" class="w-full">
-            <thead class="bg-gray-800 py-10 text-white text-center">
+          <table v-if="installments.length > 0" class="w-full text-justify">
+            <thead class="bg-gray-800 py-10 text-white">
               <tr>
                 <td class="px-3 py-3">Expected Date</td>
                 <td class="px-3 py-3">Expected Amount</td>
@@ -175,9 +171,7 @@
           </table>
         </div>
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -232,7 +226,7 @@ export default {
     },
 
     calculate() {
-        // console.log(this.formData.plan)
+      // console.log(this.formData.plan)
       axios
         .post("/api/calculate/loan", this.formData)
         .then(res => {

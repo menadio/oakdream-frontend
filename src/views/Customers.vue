@@ -1,9 +1,11 @@
 <template>
   <div class="mt-8">
     <!-- page title -->
-    <div class="mb-3">
-      <h1 class="text-left font-sans font-semibold">Customers</h1>
-    </div>
+    <h3 class="text-xl font-light tracking-wide">
+      Customers
+    </h3>
+
+    <hr class="mb-5" />
 
     <!-- statistics card -->
     <div
@@ -32,18 +34,26 @@
     </div>
 
     <!-- search form -->
-    <div class="mb-3">
-      <div class="w-1/5">
+    <div class="w-full flex mb-3">
+      <div class="w-1/4 justify-start">
         <input
-          class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
+          class="w-40 bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
           type="text"
           placeholder="Account"
         />
       </div>
+
+      <div class="w-full flex justify-end">
+        <router-link
+          :to="'/customers/create'"
+          class="px-4 py-2 text-sm bg-white rounded shadow hover:bg-gray-400 focus:outline-none"
+          >New Account</router-link
+        >
+      </div>
     </div>
 
     <!-- customers -->
-    <div class="w-full mx-auto h-full rounded-lg shadow-lg bg-white pt-3">
+    <div id="customers-table" class="w-full mx-auto h-full rounded-lg shadow-lg bg-white pt-3">
       <table class="table-auto w-full font-sans">
         <thead class="bg-gray-800 py-10 text-white text-center">
           <tr>
@@ -55,7 +65,12 @@
             <td class="px-3 py-3">Action</td>
           </tr>
         </thead>
-        <tbody class="border text-gray-600">
+        <tbody class="border text-gray-600 text-center">
+          <loading
+            :active.sync="isLoading"
+            :can-cancel="true"
+            :is-full-page="fullPage"
+          ></loading>
           <tr
             v-for="customer in customers"
             v-bind:key="customer.id"
@@ -89,15 +104,24 @@
 
 <script>
 import axios from "axios";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   name: "customers",
 
   data() {
     return {
+      isLoading: false,
+      fullPage: false,
       customers: [],
-      stats: ""
+      stats: "",
+      createAccount: false
     };
+  },
+
+  components: {
+    Loading
   },
 
   mounted() {
@@ -107,10 +131,13 @@ export default {
 
   methods: {
     getCustomers() {
+      this.isLoading = true;
+
       axios
         .get("/api/loanees")
         .then(res => {
           this.customers = res.data.loanees;
+          this.isLoading = false;
         })
         .catch(err => {
           console.log(err);
@@ -131,4 +158,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+#customers-table, .vld-parent {
+    position: relative;
+}
+</style>

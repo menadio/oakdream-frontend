@@ -1,36 +1,86 @@
 <template>
   <div class="mt-8">
-    <!-- page title -->
-    <div class="mb-3 flex">
-      <h1 class="text-left font-sans font-semibold">Interest Rates</h1>
-      <svg
-        id="add"
-        @click="this.toggleRateForm"
-        class="h-10 w-10 inline-block ml-auto cursor-pointer stroke-current text-gray-100 hover:text-gray-400"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <path
-          class="heroicon-ui"
-          d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm1-9h2a1 1 0 0 1 0 2h-2v2a1 1 0 0 1-2 0v-2H9a1 1 0 0 1 0-2h2V9a1 1 0 0 1 2 0v2z"
-        />
-      </svg>
-    </div>
+    <loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      :is-full-page="fullPage"
+    ></loading>
 
-    <!-- form -->
-    <div class="mb-3" v-show="openForm">
-      <div class="w-full flex">
+    <!-- page title -->
+    <h3 class="text-xl font-light tracking-wide">
+      Interest Rates
+    </h3>
+
+    <hr class="mb-5" />
+
+    <!-- forms -->
+    <div class="w-full flex justify-content-around mb-3">
+      <!-- search -->
+      <div class="w-1/3">
         <input
-          class="bg-white w-full rounded-lg px-3 focus:outline-none appearance-none block"
-          type="number"
-          placeholder="Enter interest rate value"
-          v-model="interest"
+          :class="{ hidden: openForm }"
+          class="w-full bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
+          type="text"
+          placeholder="Find a rate"
         />
+      </div>
+
+      <!-- create plan -->
+      <div v-if="openForm" class="w-2/3 ml-5">
+        <form>
+          <div class="w-full flex -mx-2">
+            <div class="w-full px-2">
+              <input
+                v-model="formData.interest"
+                class="w-full block mb-1 px-3 py-2 bg-white-300 rounded focus:bg-white focus:outline-none"
+                type="text"
+                placeholder="Plan name"
+                required
+              />
+            </div>
+
+            <button
+              v-if="!update"
+              @click.stop.prevent="addRate()"
+              class="px-6 py-0 ml-5 text-black text-sm text-white bg-green-600 hover:bg-green-800 rounded shadow"
+              type="submit"
+            >
+              Submit
+            </button>
+
+            <button
+              v-if="update"
+              @click.stop.prevent="updateRate(), (update = false)"
+              class="px-6 py-0 ml-5 text-black text-sm text-white bg-green-600 hover:bg-green-800 rounded shadow"
+            >
+              Save
+            </button>
+
+            <button
+              @click.stop.prevent="
+                (openForm = !openForm),
+                  (update = false),
+                  (formData.interest = '')
+              "
+              class="px-6 py-0 ml-3 text-black text-sm text-red-600 bg-white outline-red hover:bg-red-600 hover:text-white rounded shadow"
+              type="submit"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div
+        v-if="!openForm"
+        :class="{ 'w-full': !openForm }"
+        class="flex justify-end"
+      >
         <button
-          class="py-3 px-auto ml-3 w-1/2 rounded uppercase text-sm font-medium bg-gray-400 hover:bg-gray-600 hover:text-white shadow"
-          @click="this.addRate"
+          @click="openForm = !openForm"
+          class="px-6 py-0 text-sm bg-white rounded shadow hover:bg-gray-400 focus:outline-none"
         >
-          Submit
+          New Payment Plan
         </button>
       </div>
     </div>
@@ -45,7 +95,8 @@
             <td class="px-3 py-3">Actions</td>
           </tr>
         </thead>
-        <tbody class="border text-gray-600">
+
+        <tbody class="border text-gray-600 text-center">
           <tr
             v-for="rate in rates"
             v-bind:key="rate.id"
@@ -55,18 +106,8 @@
             <td class="px-3 py-3">{{ rate.created_at }}</td>
             <td class="px-3 py-3 flex justify-center text-gray-500">
               <svg
-                v-on:click="$emit('loan', loan.id)"
-                class="cursor-pointer h-6 w-6 fill-current inline-block mr-3"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  class="heroicon-ui"
-                  d="M17.56 17.66a8 8 0 0 1-11.32 0L1.3 12.7a1 1 0 0 1 0-1.42l4.95-4.95a8 8 0 0 1 11.32 0l4.95 4.95a1 1 0 0 1 0 1.42l-4.95 4.95zm-9.9-1.42a6 6 0 0 0 8.48 0L20.38 12l-4.24-4.24a6 6 0 0 0-8.48 0L3.4 12l4.25 4.24zM11.9 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
-                />
-              </svg>
-              <svg
-                class="cursor-pointer h-6 w-6 fill-current inline-block mr-3"
+                @click="editRate(rate.id), (update = !update)"
+                class="cursor-pointer h-6 w-6 fill-current hover:text-blue-600 mr-3"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
               >
@@ -75,9 +116,10 @@
                   d="M6.3 12.3l10-10a1 1 0 0 1 1.4 0l4 4a1 1 0 0 1 0 1.4l-10 10a1 1 0 0 1-.7.3H7a1 1 0 0 1-1-1v-4a1 1 0 0 1 .3-.7zM8 16h2.59l9-9L17 4.41l-9 9V16zm10-2a1 1 0 0 1 2 0v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2h6a1 1 0 0 1 0 2H4v14h14v-6z"
                 />
               </svg>
+
               <svg
                 id="delete"
-                v-on:click="deleteRate(rate.id)"
+                @click="deleteRate(rate.id)"
                 class="cursor-pointer h-6 w-6 fill-current hover:text-red-600"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -97,28 +139,43 @@
 
 <script>
 import axios from "axios";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   name: "rates",
 
   data() {
     return {
+      isLoading: false,
+      fullPage: true,
       rates: [],
       openForm: false,
-      interest: ""
+      update: false,
+      formData: {
+        interest: ""
+      },
+      rateId: ""
     };
   },
 
-  created() {
+  components: {
+    Loading
+  },
+
+  mounted() {
     this.getRates();
   },
 
   methods: {
     getRates() {
+      this.isLoading = true;
+
       axios
         .get("/api/rates")
         .then(res => {
           this.rates = res.data.rates;
+          this.isLoading = false;
         })
         .catch(err => {
           console.log(err);
@@ -126,41 +183,74 @@ export default {
     },
 
     addRate() {
+      this.isLoading = true;
+
       axios
-        .post(`/api/rates`, {
-          interest: this.interest
-        })
+        .post(`/api/rates`, this.formData)
         .then(res => {
           console.log(res.data.responseMessage);
+          if (res.data.responseStatus == 201) {
+            this.formData.interest = "";
+            this.openForm = false;
+            this.getRates();
+            this.isLoading = false;
+          }
         })
         .catch(err => {
           console.log(err);
         });
-
-      this.openForm = false;
-      this.getRates();
-      this.interest = ''
     },
 
     deleteRate(id) {
+      this.isLoading = true;
+
       axios
         .delete(`/api/rates/${id}`)
         .then(res => {
-          console.log(res.data.responseMessage);
+          if (res.data.responseStatus == 204) {
+            this.getRates();
+            this.isLoading = false;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    editRate(id) {
+      axios
+        .get(`/api/rates/${id}`)
+        .then(res => {
+          this.openForm = !this.openForm;
+          this.formData.interest = res.data.rate.interest;
+          this.rateId = id;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    updateRate() {
+      this.isLoading = true;
+
+      axios
+        .put("/api/rates/" + this.rateId, this.formData)
+        .then(res => {
+          if (res.data.responseStatus == 200) {
+            this.getRates();
+            this.formData.interest = "";
+            this.isLoading = false;
+            this.planId = "";
+          }
         })
         .catch(err => {
           console.log(err);
         });
 
-      this.getRates();
-    },
-
-    toggleRateForm() {
       this.openForm = !this.openForm;
     }
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

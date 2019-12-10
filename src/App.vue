@@ -1,16 +1,20 @@
 <template>
-  <div id="app" class="font-sans">
-    <div class="flex">
+  <div id="app">
+    <div class="flex min-h-screen">
       <!-- sidebar -->
-      <div class="w-1/6 bg-gray-700 h-screen">
+      <div class="w-1/6 bg-gray-700">
         <div class="flex content-center flex-wrap bg-gray-800 h-16">
           <div class="w-full">
-            <h1 class="text-gray-100 text-center font-sans text-2xl">Oakdream</h1>
+            <h1 class="text-gray-100 text-center font-sans text-2xl">
+              Oakdream
+            </h1>
           </div>
         </div>
 
         <div class="mt-10" id="nav">
-          <ul class="leading-loose text-left text-gray-200 font-sans w-full text-base">
+          <ul
+            class="w-full text-left text-gray-200 font-light tracking-wide text-base"
+          >
             <li class="flex">
               <svg
                 class="h-6 w-6 fill-current text-gray-200 inline-block mr-3"
@@ -80,29 +84,25 @@
               </svg>
               <router-link to="/rates">Interest Rates</router-link>
             </li>
-            <!-- <li>
-                            <router-link to="/about">About</router-link>
-            </li>-->
           </ul>
         </div>
       </div>
 
       <!-- main area -->
-      <div class="w-full bg-gray-200 h-screen">
+      <div class="w-full bg-gray-200">
         <div class="w-full bg-white shadow-lg">
           <div class="flex h-full md:px-12 py-5">
-
             <div class="w-1/2 border-r flex justify-start">
               <h2 class="font-sans text-lg font-semibold">Good morning,</h2>
             </div>
 
             <div class="w-1/2 flex justify-end">
-                <router-link
-                to='/calculate'
-                class="block rounded-sm bg-indigo-200 hover:bg-indigo-600 hover:text-white border-gray-800 border-solid px-5 py-2 shadow"
-                >Loan Calculator</router-link>
+              <router-link
+                to="/calculate"
+                class="px-6 py-2 text-xs uppercase rounded bg-gray-300 hover:text-white hover:font-semibold hover:bg-gray-500"
+                >calculate loan</router-link
+              >
             </div>
-
           </div>
         </div>
 
@@ -115,16 +115,11 @@
 </template>
 
 <style>
-#app {
-  font-family: sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+@import url("https://fonts.googleapis.com/css?family=Nunito:300,400&display=swap");
+
 
 #nav > ul > li {
-  font-family: sans-serif;
+  font-family: "Nunito", sans-serif;
   padding: 10px 20px;
   color: #edf2f7;
 }
@@ -141,14 +136,8 @@
   color: #edf2f7;
 }
 
-/* #nav a {
-  font-weight: bold;
-  color: #2c3e50;
-} */
-
-/* #nav > ul > li > a.router-link-exact-active {
-  color: #bac6d2;
-  background-color: #2e3748;
-  border-left: 3px solid #7d9df4;
-} */
+.page-title,
+table {
+  font-family: "Nunito", sans-serif;
+}
 </style>

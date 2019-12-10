@@ -1,12 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Loans from '../views/Loans.vue'
-import Customers from '../views/Customers.vue'
-import Customer from '../views/Customer.vue'
-import Plans from '../views/Plans.vue'
-import Rates from '../views/Rates.vue'
-import LoanCalculator from '../views/LoanCalculator.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../views/Home.vue';
+import Loans from '../views/Loans.vue';
+import Loan from '../views/Loan.vue';
+import Customers from '../views/Customers.vue';
+import Customer from '../views/Customer.vue';
+import Plans from '../views/Plans.vue';
+import Rates from '../views/Rates.vue';
+import LoanCalculator from '../views/LoanCalculator.vue';
+import CreateAccount from '../components/CreateAccount.vue';
 
 Vue.use(VueRouter)
 
@@ -22,9 +24,19 @@ const routes = [
     component: Loans
   },
   {
+    path: '/loans/:id',
+    name: 'loan',
+    component: Loan
+  },
+  {
     path: '/customers',
     name: 'customers',
     component: Customers
+  },
+  {
+    path: '/customers/create',
+    name: 'CreateAccount',
+    component: CreateAccount
   },
   {
     path: '/customers/:id',
