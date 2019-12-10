@@ -54,8 +54,8 @@
 
     <!-- customers -->
     <div id="customers-table" class="w-full mx-auto h-full rounded-lg shadow-lg bg-white pt-3">
-      <table class="table-auto w-full font-sans">
-        <thead class="bg-gray-800 py-10 text-white text-center">
+      <table class="w-full table-auto text-center">
+        <thead class="py-10 text-white bg-gray-800">
           <tr>
             <td class="px-3 py-3">Account No.</td>
             <td class="px-3 py-3">Firstname</td>
@@ -65,7 +65,8 @@
             <td class="px-3 py-3">Action</td>
           </tr>
         </thead>
-        <tbody class="border text-gray-600 text-center">
+
+        <tbody class="border text-gray-600">
           <loading
             :active.sync="isLoading"
             :can-cancel="true"

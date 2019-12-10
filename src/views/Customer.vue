@@ -131,7 +131,7 @@
           </div>
         </div>
 
-        <!-- loan form -->
+        <!-- loan request form -->
         <div v-if="showForm" class="w-full bg-white rounded shadow">
           <form @submit.prevent="requestLoan()">
             <div class="w-full px-5 py-5 flex -mx-2">
@@ -238,8 +238,8 @@
         <div
           class="md:w-full bg-white rounded-bl rounded-br shadow-lg mb-5 pt-3"
         >
-          <table class="table-auto w-full text-justify">
-            <thead class="bg-gray-800 py-10 text-white">
+          <table class="w-full table-auto text-center">
+            <thead class="py-10 text-white bg-gray-800">
               <tr>
                 <td class="px-3 py-3">Ref. No.</td>
                 <td class="px-3 py-3">Amount</td>
@@ -270,15 +270,15 @@
         </div>
       </div>
 
-      <div v-if="loans.length < 1 && showLoans">
+      <div v-if="(loans.length == 0) && showLoans">
         <NoRecord collection="loans" />
       </div>
 
       <!-- schedules -->
       <div v-if="schedules.length > 0 && showSchedules">
         <div class="md:w-full bg-white rounded-bl rounded-br shadow-lg pt-3">
-          <table class="w-full text-justify">
-            <thead class="py-10 bg-gray-800 text-white">
+          <table class="w-full table-auto text-center">
+            <thead class="py-10 text-white bg-gray-800">
               <tr>
                 <td class="px-3 py-3">Schedule</td>
                 <td class="px-3 py-3">Amount</td>
@@ -299,7 +299,7 @@
         </div>
       </div>
 
-      <div v-if="schedules.length < 1 && showSchedules">
+      <div v-if="(schedules.length == 1) && showSchedules">
         <NoRecord collection="schedules" />
       </div>
     </div>
@@ -344,7 +344,7 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     this.getCustomer();
     this.getPlans();
     this.getRates();
@@ -399,7 +399,7 @@ export default {
     },
 
     requestLoan() {
-        this.isLoading = true;
+      this.isLoading = true;
 
       axios
         .post("/api/loans", this.formData)

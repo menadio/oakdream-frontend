@@ -10,6 +10,7 @@
 
     <hr class="mb-5" />
 
+    <!-- new account form -->
     <div class="w-full pb-5">
       <form @submit.prevent="createAccount()">
         <div class="w-full flex mb-3 -mx-2">

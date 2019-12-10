@@ -15,7 +15,7 @@
 
     <!-- forms -->
     <div class="w-full flex justify-content-around mb-3">
-      <!-- search -->
+      <!-- search form -->
       <div class="w-1/3">
         <input
           :class="{ hidden: openForm }"
@@ -25,7 +25,7 @@
         />
       </div>
 
-      <!-- create plan -->
+      <!-- create plan form -->
       <div v-if="openForm" class="w-2/3 ml-5">
         <form>
           <div class="w-full flex -mx-2">
@@ -82,8 +82,8 @@
 
     <!-- plans table -->
     <div class="w-full mx-auto h-full rounded-lg shadow-lg bg-white pt-3">
-      <table class="table-auto w-full font-sans">
-        <thead class="bg-gray-800 py-10 text-white text-center">
+      <table class="w-full table-auto text-center">
+        <thead class="py-10 text-white bg-gray-800">
           <tr>
             <td class="px-3 py-3">Plan Type</td>
             <td class="px-3 py-3">Created On</td>
@@ -91,7 +91,7 @@
           </tr>
         </thead>
 
-        <tbody class="border text-gray-600 text-center">
+        <tbody class="border text-gray-600">
           <tr
             v-for="plan in plans"
             v-bind:key="plan.id"
@@ -179,6 +179,7 @@ export default {
 
     addPlan() {
       this.isLoading = true;
+
       axios
         .post(`/api/plans`, this.formData)
         .then(res => {
@@ -196,6 +197,7 @@ export default {
 
     deletePlan(id) {
       this.isLoading = true;
+
       axios
         .delete(`/api/plans/${id}`)
         .then(res => {
@@ -232,14 +234,13 @@ export default {
             this.getPlans();
             this.formData.name = "";
             this.isLoading = false;
+            this.openForm = !this.openForm;
             this.planId = "";
           }
         })
         .catch(err => {
           console.log(err);
         });
-
-      this.openForm = !this.openForm;
     }
   }
 };

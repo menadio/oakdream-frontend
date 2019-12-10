@@ -17,14 +17,14 @@
     <div
       class="bg-white rounded h-auto shadow-lg flex content-center flex-wrap text-left mb-8"
     >
-      <div class="w-1/3 border-r md:py-5 md:px-5 font-sans">
+      <div class="w-1/3 border-r md:py-5 md:px-5">
         <p class="text-2xl font-semibold text-indigo-800">
           {{ stats.loansTotal }}
         </p>
         <p class="text-gray-500 font-semibold text-sm">Total Loans</p>
       </div>
 
-      <div class="w-1/3 border-r py-5 px-5 font-sans">
+      <div class="w-1/3 border-r py-5 px-5">
         <p class="text-2xl font-semibold text-indigo-800">
           {{ stats.loansApproved }}
         </p>
@@ -52,8 +52,8 @@
 
     <!-- loans table -->
     <div class="w-full mx-auto h-full rounded-lg shadow-lg bg-white pt-3">
-      <table class="w-full">
-        <thead class="bg-gray-800 py-10 text-white text-justify">
+      <table class="w-full table-auto text-center">
+        <thead class="py-10 text-white bg-gray-800">
           <tr>
             <td class="px-3 py-3">Client</td>
             <td class="px-3 py-3">Ref. No.</td>
@@ -66,7 +66,7 @@
           </tr>
         </thead>
 
-        <tbody class="border text-gray-600 text-justify">
+        <tbody class="border text-gray-600">
           <tr v-for="loan in loans" v-bind:key="loan.id" class="border">
             <td class="px-3 py-3">{{ loan.customer }}</td>
             <td class="px-3 py-3">{{ loan.reference }}</td>

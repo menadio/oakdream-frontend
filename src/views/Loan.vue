@@ -13,7 +13,7 @@
 
     <hr class="mb-5" />
 
-    <!-- loan details card -->
+    <!-- loan view -->
     <div class="w-full mb-10 py-3 flex bg-white rounded-lg shadow-lg">
       <!-- loan details card -->
       <div class="w-1/2 px-5 py-2 border-r">
@@ -91,7 +91,7 @@
         </table>
       </div>
 
-      <!-- review loan card -->
+      <!-- loan review card -->
       <div v-if="this.status == 'Pending'" class="w-1/2 px-5 py-2">
         <form>
           <div class="mb-5">
@@ -148,14 +148,16 @@
     <!-- schedules card -->
     <div v-if="this.schedules.length > 0" class="w-full py-3">
       <h3 class="mb-3 text-xl font-light tracking-wide">Repayment Schedules</h3>
+
       <div class="pt-3 bg-white rounded-lg shadow-lg">
-        <table class="w-full">
-          <thead class="py-10 text-white text-justify bg-gray-800">
+        <table class="w-full table-auto text-center">
+          <thead class="py-10 text-white bg-gray-800">
             <tr class="">
               <td class="px-3 py-3">Due Date</td>
               <td class="px-3 py-3">Amount</td>
               <td class="px-3 py-3">Interest</td>
               <td class="px-3 py-3">Total</td>
+              <td class="px-3 py-3">Status</td>
             </tr>
           </thead>
 
@@ -165,6 +167,7 @@
               <td class="px-3 py-3">{{ schedule.amount }}</td>
               <td class="px-3 py-3">{{ schedule.interest }}</td>
               <td class="px-3 py-3">{{ schedule.total }}</td>
+              <td class="px-3 py-3">{{ schedule.status }}</td>
             </tr>
           </tbody>
         </table>
@@ -224,7 +227,6 @@ export default {
     },
 
     approveLoan() {
-      //   let api = "/api/loans/" + this.loan_id + "/approve";
       this.isLoading = true;
 
       axios

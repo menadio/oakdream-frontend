@@ -15,6 +15,7 @@
 
     <!-- forms -->
     <div class="w-full flex justify-content-around mb-3">
+
       <!-- search -->
       <div class="w-1/3">
         <input
@@ -25,7 +26,7 @@
         />
       </div>
 
-      <!-- create plan -->
+      <!-- create rate form -->
       <div v-if="openForm" class="w-2/3 ml-5">
         <form>
           <div class="w-full flex -mx-2">
@@ -87,8 +88,8 @@
 
     <!-- rates table -->
     <div class="w-full mx-auto h-full rounded-lg shadow-lg bg-white pt-3">
-      <table class="table-auto w-full font-sans">
-        <thead class="bg-gray-800 py-10 text-white text-center">
+      <table class="w-full table-auto text-center">
+        <thead class="py-10 text-white bg-gray-800">
           <tr>
             <td class="px-3 py-3">Interest %</td>
             <td class="px-3 py-3">Created On</td>
@@ -96,7 +97,7 @@
           </tr>
         </thead>
 
-        <tbody class="border text-gray-600 text-center">
+        <tbody class="border text-gray-600">
           <tr
             v-for="rate in rates"
             v-bind:key="rate.id"
@@ -188,7 +189,6 @@ export default {
       axios
         .post(`/api/rates`, this.formData)
         .then(res => {
-          console.log(res.data.responseMessage);
           if (res.data.responseStatus == 201) {
             this.formData.interest = "";
             this.openForm = false;
@@ -240,14 +240,13 @@ export default {
             this.getRates();
             this.formData.interest = "";
             this.isLoading = false;
+            this.openForm = !this.openForm;
             this.planId = "";
           }
         })
         .catch(err => {
           console.log(err);
         });
-
-      this.openForm = !this.openForm;
     }
   }
 };
